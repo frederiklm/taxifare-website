@@ -1,6 +1,9 @@
 import streamlit as st
 import datetime
 import requests
+import numpy as np
+import pandas as pd
+
 '''
 # New York Taxi Fare Calculation
 '''
@@ -22,22 +25,22 @@ date = st.date_input(
 
 time = st.time_input('At what time do you want to take the ride? ', datetime.time(8, 45))
 
-pickup_longitude = st.text_input('Choose a pickup longitude', "93.122316")
-pickup_latitude = st.text_input('Choose a pickup latitude', "93.122316")
+pickup_longitude = st.text_input('Choose a pickup longitude', "-74.0060")
+pickup_latitude = st.text_input('Choose a pickup latitude', "40.7128")
 
-dropoff_longitude = st.text_input('Choose a dropoff longitude', "93.122316")
-dropoff_latitude = st.text_input('Choose a dropoff latitude', "93.122316")
+dropoff_longitude = st.text_input('Choose a dropoff longitude', "-74.0060")
+dropoff_latitude = st.text_input('Choose a dropoff latitude', "40.8128")
 
 passenger_count = st.number_input('Choose number of passengers', 1, 8, 3)
 #pickup_datetime = datetime.combine(date ,time)
 
 
 
-url = 'https://taxifare.lewagon.ai/predict'
+#url = 'https://taxifare.lewagon.ai/predict'
 
-if url == 'https://taxifare.lewagon.ai/predict':
+#if url == 'https://taxifare.lewagon.ai/predict':
 
-    st.markdown('Maybe you want to use your own API for the prediction, not the one provided by Le Wagon...')
+#st.markdown('Maybe you want to use your own API for the prediction, not the one provided by Le Wagon...')
 
 
 
@@ -58,5 +61,18 @@ if st.button('Calculate fare'):
 
 
 
+#@st.cache
+def get_map_data():
 
-#f"Your predicted fare is: ${round(call_result['fare'], 2)}!"
+    return pd.DataFrame({
+        "lat" : [float(pickup_latitude), float(dropoff_latitude)],
+        "lon" :  [float(pickup_longitude), float(dropoff_longitude)]
+    })
+
+df = get_map_data()
+st.map(df, latitude = "lat",  longitude='lon', size = 50, zoom =10)
+
+
+
+
+#st.map()
