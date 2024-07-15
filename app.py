@@ -3,6 +3,10 @@ import datetime
 import requests
 import numpy as np
 import pandas as pd
+from streamlit_folium import st_folium
+import folium
+from folium.plugins import Draw
+
 
 '''
 # New York Taxi Fare Calculation
@@ -72,7 +76,20 @@ def get_map_data():
 df = get_map_data()
 st.map(df, latitude = "lat",  longitude='lon', size = 50, zoom =10)
 
+CENTRAL_COORDS = [40.71427, -74.00597]
 
+map = folium.Map(location = CENTRAL_COORDS, zoom_start =10)
 
+##draw = Draw()
+
+#draw.add_to(map)
+
+pickup_icon = folium.Icon(color='green', icon='glyphicon glyphicon-arrow-up')
+dropoff_icon = folium.Icon(color='red', icon='glyphicon glyphicon-arrow-down')
+
+folium.Marker([float(pickup_latitude), float(pickup_longitude)], tooltip='Pickup', icon = pickup_icon).add_to(map)
+folium.Marker([float(dropoff_latitude), float(dropoff_longitude)], tooltip='Dropoff', icon = dropoff_icon).add_to(map)
+
+st_data = st_folium(map, width = 1000)
 
 #st.map()
